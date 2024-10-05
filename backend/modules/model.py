@@ -2,7 +2,7 @@ import numpy as np
 import onnxruntime as rt
 import pandas as pd
 
-session = rt.InferenceSession("./model/rf.onnx")
+session = rt.InferenceSession("../model/rf.onnx")
 
 input_name = session.get_inputs()[0].name
 
@@ -39,7 +39,5 @@ def predict(texts: list) -> float:
 
 if __name__ == "__main__":
     clothe = ["shirt", "zara", "cotton", "casual", "white", "new"]
-
-
 
     print(predict(clothe))

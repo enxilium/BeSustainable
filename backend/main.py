@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
-from backend import account
+from modules import model
+from modules import account
 
 app = Flask(__name__)
 
@@ -164,6 +165,25 @@ def updateActivity():
             return jsonify(status="Success", message="Updated Activity"), 200
         case -1:
             return jsonify(status="Fail", message="Account not found."), 404
+
+
+@app.route('/calcPrice', methods=['POST'])
+def calPrice():
+    if not request.is_json:
+        return jsonify(status="Fail", message="No Data Received"), 400
+    
+    data = request.get_json()
+
+    val = data.get("data")
+
+    try:
+        price = model.predict(val)
+
+    except Exception as e:
+        return jsonify(status="Fail", message=e)
+
+    return jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
