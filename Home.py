@@ -1,5 +1,19 @@
 import streamlit as st
 from PIL import Image
+import openai
+from openai import OpenAI
+import os
+import tempfile
+from dotenv import load_dotenv
+import base64
+from io import BytesIO
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
 
 st.set_page_config(
     page_title="BeSustainable",
@@ -28,18 +42,112 @@ st.markdown(
 """
 )
 
-image = st.file_uploader("Please upload a picture", type=["csv", "txt", "pdf", "png", "jpg"])
 
-if image is not None:
+def get_clothing_description(base64_string):
     try:
+        # Create a chat completion request with the image URL
+        response = client.chat.completions.create(
+            model="gpt-4-turbo",  # Use the model that supports vision
+            messages=[
+                {
+                    'role': 'user',
+                    'content': [
+                        {
+                            'type': 'text',
+                            'text': "Describe the clothing in the image in the following format: {}'type', 'brand', 'material', 'style', 'color', 'state'}",
+                        },
+                        {
+                            'type': 'image_url',  # Still using the image URL type, but you can adjust this.
+                            'image_url': {
+                                'url': f"data:image/jpeg;base64,{base64_string}",  # Embed the Base64 string directly
+                            },
+                        },
+                    ],
+                }
+            ]
+        )
+        st.write(response)
+    except Exception as e:
+        pass
+        
 
-        st.write("File uploaded successfully!")
-        st.write(f"File name: {image.name}")
+temp_dir = tempfile.TemporaryDirectory()
+picture = st.camera_input("Take a picture")
 
-        st.image(Image.open(image), use_column_width=True)
+if picture is not None:
+    # Read the image data
+    image_data = picture.getvalue()
+    
+    # Convert the image data to a base64 string
+    base64_string = base64.b64encode(image_data).decode("utf-8")
 
-    except:
-        st.error("File failed to upload. Please try again.")
+    # Display the image
+    st.image(image_data, caption="Captured Image", use_column_width=True)
+
+    # Show the base64 string
+    st.write("Base64 String for API access:")
+    st.text(base64_string)  # Display as text or use it in your API call
+    st.write(get_clothing_description(base64_string))
+
+
+# image = st.file_uploader("Please upload a picture", type=["csv", "txt", "pdf", "png", "jpg"])
+
+# if image is not None:
+#     try:
+
+#         st.write("File uploaded successfully!")
+#         st.write(f"File name: {image.name}")
+
+#         st.image(Image.open(image), use_column_width=True)
+
+#     except:
+#         st.error("File failed to upload. Please try again.")
+
+
+if picture is not None:
+    try:
+        st.write("Picture taken successfully!")
+        st.write(f"File name: {picture.name}")
+
+        # Display the image
+        st.image(Image.open(picture), use_column_width=True)
+
+        # Save picture temporarily for processing
+        temp_image_path = "temp_image.jpg"
+        with open(temp_image_path, "wb") as f:
+            f.write(picture.getbuffer())
+
+        # Get clothing description from ChatGPT
+        detailed_description = get_clothing_description(base64_string)
+        if detailed_description:
+            st.write("Detailed Clothing Description:")
+            st.write(detailed_description)
+
+    except Exception as e:
+        st.error(f"File failed to upload. Please try again. Error: {e}")
+# elif image is not None:
+#     try:
+#         st.write("File uploaded successfully!")
+#         st.write(f"File name: {image.name}")
+
+#         # Display the image
+#         st.image(Image.open(image), use_column_width=True)
+
+#         # Save image temporarily for processing
+#         temp_image_path = "temp_image.jpg"
+#         with open(temp_image_path, "wb") as f:
+#             f.write(image.getbuffer())
+
+#         # Get clothing description from ChatGPT
+#         detailed_description = get_clothing_description(temp_image_path)
+#         if detailed_description:
+#             st.write("Detailed Clothing Description:")
+#             st.write(detailed_description)
+
+#     except Exception as e:
+#         st.error(f"File failed to upload. Please try again. Error: {e}")
+
+
 
 login, signup = st.sidebar.columns(2)
 # Initialize session state variables
@@ -74,7 +182,7 @@ if st.session_state['show_login']:
             st.write(f"Password: {password}")
 
     with col2:
-        if st.button("Cancel"):
+        if st.button("Cancel Login"):
             st.session_state['show_login'] = False
 
 # Sign-up section
@@ -95,5 +203,5 @@ if st.session_state['show_signup']:
             st.write(f"Password: {signup_password}")
 
     with col2:
-        if st.button("Cancel"):
+        if st.button("Cancel Signup"):
             st.session_state['show_signup'] = False
