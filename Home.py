@@ -6,8 +6,6 @@ import os
 import tempfile
 from dotenv import load_dotenv
 import base64
-from io import BytesIO
-
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -47,17 +45,25 @@ def get_clothing_description(base64_string):
     try:
         # Create a chat completion request with the image URL
         response = client.chat.completions.create(
-            model="gpt-4-turbo",  # Use the model that supports vision
+            model="gpt-4o-mini",  # Use the model that supports vision
             messages=[
                 {
                     'role': 'user',
                     'content': [
-                        {
+                        { # {'type', 'brand', 'material', 'style', 'color', 'state'}
                             'type': 'text',
-                            'text': "Describe the clothing in the image in the following format: {}'type', 'brand', 'material', 'style', 'color', 'state'}",
+                            'text': """Describe the clothing in the image in the following format: 
+                            'type': pick the one that suits the clothing best: dress, shoes, jacket, pants, or simply n/a
+                            'brand': the brand should be in all lowercase with all spaces removed
+                            'material': choose between leather, cotton, polyester, denim, or simply n/a
+                            'style': choose between casual, formal, or athletic
+                            'color': describe the color. don't use 'light color' or 'dark color' here
+                            'state': the condition of the clothing, choose between used and new
+                            Lastyl after 3 %%%, output a choice that you think fits best for this article of clothing, if you had to choose. Do not explain why, simply output your choice.
+                            Choose between THRIFT, DONATE, DISPOSE""",
                         },
                         {
-                            'type': 'image_url',  # Still using the image URL type, but you can adjust this.
+                            'type': 'image_url',
                             'image_url': {
                                 'url': f"data:image/jpeg;base64,{base64_string}",  # Embed the Base64 string directly
                             },
@@ -66,9 +72,16 @@ def get_clothing_description(base64_string):
                 }
             ]
         )
-        st.write(response)
+        data = response.choices[0].message.content
+        st.write(data)
+        st.write(data.split('%%%'))
+        return data
     except Exception as e:
+        st.write(e)
         pass
+
+
+
         
 
 temp_dir = tempfile.TemporaryDirectory()
@@ -82,7 +95,7 @@ if picture is not None:
     base64_string = base64.b64encode(image_data).decode("utf-8")
 
     # Display the image
-    st.image(image_data, caption="Captured Image", use_column_width=True)
+    # st.image(image_data, caption="Captured Image", use_column_width=True)
 
     # Show the base64 string
     st.write("Base64 String for API access:")
@@ -110,7 +123,7 @@ if picture is not None:
         st.write(f"File name: {picture.name}")
 
         # Display the image
-        st.image(Image.open(picture), use_column_width=True)
+        # st.image(Image.open(picture), use_column_width=True)
 
         # Save picture temporarily for processing
         temp_image_path = "temp_image.jpg"
@@ -118,10 +131,10 @@ if picture is not None:
             f.write(picture.getbuffer())
 
         # Get clothing description from ChatGPT
-        detailed_description = get_clothing_description(base64_string)
-        if detailed_description:
-            st.write("Detailed Clothing Description:")
-            st.write(detailed_description)
+        # detailed_description = get_clothing_description(base64_string)
+        # if detailed_description:
+        #     st.write("Detailed Clothing Description:")
+        #     st.write(detailed_description)
 
     except Exception as e:
         st.error(f"File failed to upload. Please try again. Error: {e}")
