@@ -28,18 +28,14 @@ def createUser(accountInfo: dict) -> int:
         "email": "john@example.com",
         "password": "hashedpassword",
         "item": [],
-        "activity": {
-            "streak": 5,
-            "maxStreak": 5
-        }
+        "money": 0
     }
 
     item will be empty, but the base structure is:
     {
         "date": date,
-        "score": 100,
-        "listOfWaste": ["plastic", "paper"],
-        "achievements": ["recycler", "saver"]
+        "money": 100,
+        "picture": image
     }
 
     date will be the date time of the item's creation
@@ -153,31 +149,6 @@ def updateItem(email: str, val: dict) -> int:
 
     return 0
 
-def updateActivity(email: str, val: int) -> int:
-    
-    acc = account.find_one({"email": email})
-
-    if not acc:
-        return -1
-
-    if acc["activity"]["maxStreak"] < val:
-        account.update_one(
-        {
-            "email": email,
-        },
-        {'$set' : {'activity.maxStreak': val}}
-    )
-
-    account.update_one(
-        {
-            "email": email,
-        },
-        {'$set' : {'activity.streak': val}}
-    )
-
-    return 0
-
-
 if __name__ == "__main__":
 
     date = datetime.datetime.now()
@@ -213,8 +184,6 @@ if __name__ == "__main__":
     print(updateUserInfo("john@example.com", "name", "jane"))
 
     print(updateItem("john@example.com", item))
-
-    print(updateActivity("john@example.com", 6))
 
     print(getUser("john@example.com"))
 

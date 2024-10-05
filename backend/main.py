@@ -147,26 +147,6 @@ def addItem():
             return jsonify(status="Fail", message="Account not found."), 404
 
 
-@app.route('/updateActivity', methods=['POST'])
-def updateActivity():
-    if not request.is_json:
-        return jsonify(status="Fail", message="No Data Received"), 400
-    
-    data = request.get_json()
-
-    email = data.get("email")
-
-    val = data.get("val")
-
-    acc = account.updateActivity(email, val)
-
-    match acc:
-        case 0:
-            return jsonify(status="Success", message="Updated Activity"), 200
-        case -1:
-            return jsonify(status="Fail", message="Account not found."), 404
-
-
 @app.route('/calcPrice', methods=['POST'])
 def calPrice():
     if not request.is_json:
