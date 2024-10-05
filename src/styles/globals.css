@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Cutive Mono";
+  src: url("/fonts/CutiveMono-Regular.ttf");
+}
+@layer base {
+  body {
+    @apply font-primary bg-primary leading-loose;
+  }
+  
+  .h1 {
+    @apply text-[48px] xl:text-[80px] leading-[1.1] font-semibold;
+  }
+
+  .h2 {
+    @apply text-[36px] xl:text-[48px] leading-[1.1] font-semibold;
+  }
+
+  .h3 {
+    @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px #ffffff;  
+  }
+  
+  .text-outline-hover {
+    -webkit-text-stroke: 1px #66b088;
+  }
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  background: linear-gradient(180deg, #DDFFDD, #96F2AC, #DDFFDD);
+  background-size: 400% 400%;
+  animation: gradientBackground 5s ease infinite;
+}
