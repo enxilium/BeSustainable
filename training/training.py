@@ -48,3 +48,5 @@ joblib.dump(scaler, 'scaler.pkl')
 
 # Export encoded columns
 joblib.dump(df_encoded.columns, 'model_columns.pkl')
+
+
