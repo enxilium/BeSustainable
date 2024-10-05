@@ -116,22 +116,63 @@ def getUser(email: str) -> dict:
 
     return account.find_one({"email": email})
 
-def editUser(email: str, newInfo: dict) -> int:
-    """Replaces the user info in DB with updated info
+def updateUserInfo(email: str, cat: str, val) -> int:
+    """updates the user info
 
     Args:
         email (str): user email
-        newInfo (dict): new user info
+        cat (str): field to be updated
+        val (any): new value
 
     Returns:
         int: 0 -> success, -1 -> email not found
     """
     if not account.find_one({"email": email}):
         return -1
-    
-    account.replace_one(
+
+    account.update_one(
         {"email": email},
-        newInfo
+        {"$set" : {cat: val}}
+    )
+
+    return 0
+
+def updateItem(email: str, val: dict) -> int:
+    
+    acc = account.find_one({"email": email})
+
+    if not acc:
+        return -1
+
+    account.update_one(
+        {
+            "email": email,
+        },
+        {'$push': {"item": val}}
+    )
+
+    return 0
+
+def updateActivity(email: str, val: int) -> int:
+    
+    acc = account.find_one({"email": email})
+
+    if not acc:
+        return -1
+
+    if acc["activity"]["maxStreak"] < val:
+        account.update_one(
+        {
+            "email": email,
+        },
+        {'$set' : {'activity.maxStreak': val}}
+    )
+
+    account.update_one(
+        {
+            "email": email,
+        },
+        {'$set' : {'activity.streak': val}}
     )
 
     return 0
@@ -161,23 +202,19 @@ if __name__ == "__main__":
 
     print(login("john@example.com", "hashedpassword"))
 
-    user = {
-        "name": "John Doe",
-        "email": "john@example.com",
-        "password": "hashedpassword",
-        "item": [{
-            "date": date,
+    item = {
+            "date": datetime.datetime.now(),
             "score": 5,
             "listOfWaste": ["plastic", "paper"],
-            "achievements": ["recycler", "saver"]
-        }],
-        "activity": {
-            "streak": 5,
-            "maxStreak": 5
+            "achievements": ["recycler"]
         }
-    }
+    
 
-    print(editUser("john@example.com", user))
+    print(updateUserInfo("john@example.com", "name", "jane"))
+
+    print(updateItem("john@example.com", item))
+
+    print(updateActivity("john@example.com", 6))
 
     print(getUser("john@example.com"))
 
