@@ -24,19 +24,19 @@ def createUser(accountInfo: dict) -> int:
         Example:
 
         {
-        "name": "John Doe",
-        "email": "john@example.com",
-        "password": "hashedpassword",
-        "item": [],
-        "money": 0
-    }
+            "name": "John Doe",
+            "email": "john@example.com",
+            "password": "hashedpassword",
+            "item": [],
+            "money": 0
+        }
 
     item will be empty, but the base structure is:
-    {
-        "date": date,
-        "money": 100,
-        "picture": image
-    }
+        {
+            "date": date,
+            "money": 100,
+            "picture": image
+        }
 
     date will be the date time of the item's creation
     
@@ -159,14 +159,10 @@ if __name__ == "__main__":
         "password": "hashedpassword",
         "item": [{
             "date": date,
-            "score": 100,
-            "listOfWaste": ["plastic", "paper"],
-            "achievements": ["recycler", "saver"]
+            "money": 100,
+            "picture": None
         }],
-        "activity": {
-            "streak": 5,
-            "maxStreak": 5
-        }
+        "money": 100
     }
 
     print(createUser(user))
@@ -175,9 +171,8 @@ if __name__ == "__main__":
 
     item = {
             "date": datetime.datetime.now(),
-            "score": 5,
-            "listOfWaste": ["plastic", "paper"],
-            "achievements": ["recycler"]
+            "money": 5,
+            "picture": None
         }
     
 

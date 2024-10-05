@@ -148,7 +148,7 @@ def addItem():
 
 
 @app.route('/calcPrice', methods=['POST'])
-def calPrice():
+def calcPrice():
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
