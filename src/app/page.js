@@ -44,7 +44,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isUploaded) {
-      router.push('/redirect-page'); // Replace with your redirect URL
+      router.push('/recommendation'); // Replace with your redirect URL
     }
   }, [isUploaded, router]);
 
