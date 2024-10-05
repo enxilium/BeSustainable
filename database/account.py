@@ -1,5 +1,6 @@
 import pymongo
 import os
+import datetime
 
 from bcrypt import gensalt, hashpw, checkpw
 from dotenv import load_dotenv
@@ -71,11 +72,14 @@ def editUser(email: str, newInfo: dict) -> int: # type: ignore
 
 if __name__ == "__main__":
 
+    date = datetime.datetime.now()
+
     user = {
         "name": "John Doe",
         "email": "john@example.com",
         "password": "hashedpassword",
         "item": [{
+            "date": date,
             "score": 100,
             "listOfWaste": ["plastic", "paper"],
             "achievements": ["recycler", "saver"]
@@ -95,6 +99,7 @@ if __name__ == "__main__":
         "email": "john@example.com",
         "password": "hashedpassword",
         "item": [{
+            "date": date,
             "score": 5,
             "listOfWaste": ["plastic", "paper"],
             "achievements": ["recycler", "saver"]
