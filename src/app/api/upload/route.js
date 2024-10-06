@@ -39,7 +39,7 @@ export async function POST(request) {
     const command = new PutObjectCommand(uploadParams);
     await s3Client.send(command);
 
-    const fileUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/uploads/${filename}`;
+    const fileUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${filename}`;
 
     return NextResponse.json({ message: 'File uploaded successfully', filePath: fileUrl });
   }catch (error) {

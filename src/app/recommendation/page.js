@@ -55,6 +55,7 @@ function RecommendationContent(){
 
   console.log('Final set value:', value); // Log the final set value
 
+  console.log(imagePath);
 
   return (
       <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
