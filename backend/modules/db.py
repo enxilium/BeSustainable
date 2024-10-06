@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from typing import Optional, Union
 
 
-load_dotenv('./.env')
+load_dotenv('.env')
 
 client = pymongo.MongoClient(os.getenv("MONGO"))
 

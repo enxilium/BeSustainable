@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-const OPENAI_API_KEY = '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'
+const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY
 
 const handleUpload = async (file) => {
   try {
