@@ -165,7 +165,15 @@ def addItem(date: datetime, name: str, money: float) -> int:
 
 def getItems() -> list:
 
-    return [x for x in dashboard.find()]
+    data = []
+
+    for x in dashboard.find({}, {'_id': False}):
+        x['date'] = x['date'].strftime("%m/%d/%Y, %H:%M:%S")
+
+        data.append(x)
+
+
+    return data
 
 if __name__ == "__main__":
 

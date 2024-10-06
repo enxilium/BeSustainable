@@ -1,7 +1,9 @@
+import datetime
+
 from flask import Flask, request, jsonify
 
 from modules import model
-from backend.modules import db
+from modules import db
 
 app = Flask(__name__)
 
@@ -164,6 +166,32 @@ def calcPrice():
 
     return jsonify(status="Success", message="Calculation Successful", price=float(price*0.6)), 200
 
+@app.route('/addDItem', methods=['POST'])
+def addDItem():
+
+    if not request.is_json:
+        return jsonify(status="Fail", message="No Data Received"), 400
+    
+    data = request.get_json()
+
+    date = datetime.datetime.now()
+    name = data.get("name")
+    money = data.get("money")
+
+    db.addItem(date, name, money)
+
+    return jsonify(status="Success", message="Item added"), 201
+
+@app.route('/getDItem', methods=['GET'])
+def getDItem():
+
+    data = db.getItems()
+
+    
+
+    return jsonify(status="Success", message="Items retrieved", data=data ), 200
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
