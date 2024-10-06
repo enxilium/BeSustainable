@@ -18,6 +18,7 @@ const handleUpload = async (file) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini", // Note: Replace with "gpt-4o-mini" if it becomes available
+        response_format: { type: "text" },
         messages: [
           {
             role: 'user',
@@ -171,8 +172,7 @@ export default function Home() {
         </label>
         {response && (
           <div>
-            <h2>OpenAI Response:</h2>
-            <pre>{response}</pre>
+            
           </div>
         )}
       </main>
