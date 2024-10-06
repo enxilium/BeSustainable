@@ -22,3 +22,5 @@ export async function POST(request) {
 
   return NextResponse.json({ message: 'File uploaded successfully', filePath: `/uploads/${filename}` });
 }
+
+export const runtime = 'edge';
