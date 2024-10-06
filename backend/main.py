@@ -187,8 +187,6 @@ def getDItem():
 
     data = db.getItems()
 
-    
-
     return jsonify(status="Success", message="Items retrieved", data=data ), 200
 
     

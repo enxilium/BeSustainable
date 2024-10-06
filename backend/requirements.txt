@@ -5,3 +5,4 @@ bcrypt==4.2.0
 Flask==3.0.3
 onnxruntime==1.19.2
 pandas==2.2.3
+googlemaps==4.10.0

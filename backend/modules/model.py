@@ -2,7 +2,7 @@ import numpy as np
 import onnxruntime as rt
 import pandas as pd
 
-session = rt.InferenceSession("../model/rf.onnx")
+session = rt.InferenceSession("./model/rf.onnx")
 
 input_name = session.get_inputs()[0].name
 
@@ -27,8 +27,8 @@ def predict(texts: list) -> float:
         data[col] = [False]
 
     for i in preData:
-        
-        data[i] = [True]
+        if i in COLS:
+            data[i] = [True]
 
     df = pd.DataFrame(data)
 
