@@ -10,10 +10,10 @@ load_dotenv('./.env')
 
 gmaps = googlemaps.Client(os.environ.get("GCP"))
 
-def getDonations(address: str):
+def getDonations():
     res = []
 
-    loc = googlemaps.places.places(gmaps, "Clothes Donation", address, radius=1500, type="donation")
+    loc = googlemaps.places.places(gmaps, "Clothes Donation", ADDRESS, radius=1500, type="donation")
 
     places = loc["results"][:5]
 
@@ -26,11 +26,11 @@ def getDonations(address: str):
 
     return res
 
-def getThrift(address: str):
+def getThrift():
 
     res = []
 
-    loc = googlemaps.places.places(gmaps, "Thrift Store", address, radius=1500, type="store")
+    loc = googlemaps.places.places(gmaps, "Thrift Store", ADDRESS, radius=1500, type="store")
 
     places = loc["results"][:5]
 
@@ -44,5 +44,5 @@ def getThrift(address: str):
     return res
 
 if __name__ == "__main__":
-    print(getDonations(ADDRESS))
-    print(getThrift(ADDRESS))
+    print(getDonations())
+    print(getThrift())

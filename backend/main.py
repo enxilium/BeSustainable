@@ -249,5 +249,17 @@ def getDonations():
 
     places = maps.getDonations()
 
+    return jsonify(status="Success", message="Items retrieved", data=places ), 200
+
+@app.route('/thrift', methods=['GET', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+def getThrift():
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    places = maps.getThrift()
+
+    return jsonify(status="Success", message="Items retrieved", data=places ), 200
+
 if __name__ == "__main__":
     app.run(debug=True)
