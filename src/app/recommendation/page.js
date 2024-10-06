@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function RecommendationPage() {
+function RecommendationContent(){
   const [recommendation, setRecommendation] = useState('');
   const [value, setValue] = useState('N/A');
   const [imagePath, setImagePath] = useState('');
@@ -57,7 +57,6 @@ export default function RecommendationPage() {
 
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
         <div className="bg-white rounded-[2rem] shadow-lg p-8 max-w-md w-full">
           <main className="flex flex-col items-center text-center">
@@ -87,6 +86,15 @@ export default function RecommendationPage() {
           </main>
         </div>
       </div>
-    </Suspense>
+  );
+}
+
+export default function RecommendationPage() {
+  return (
+    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
+      <Suspense fallback={<div>Loading...</div>}>
+        <RecommendationContent />
+      </Suspense>
+    </div>
   );
 }
