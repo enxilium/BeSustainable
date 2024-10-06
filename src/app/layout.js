@@ -20,7 +20,7 @@ const BaseLayout = ({children}) => {
   return (
     <html lang="en">
       <body className={cutiveMono.variable}>
-        <Header/>
+        <Header class="z-50"/>
         <StairTransition></StairTransition>
         <PageTransition>
           {children}

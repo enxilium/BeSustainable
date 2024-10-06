@@ -44,13 +44,13 @@ export default function Home() {
 
   useEffect(() => {
     if (isUploaded) {
-      router.push('/redirect-page'); // Replace with your redirect URL
+      router.push('/dashboard'); // Replace with your redirect URL
     }
   }, [isUploaded, router]);
 
   return (
-    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden mx-4">
-      <main className="relative flex flex-col gap-8 items-center text-center">
+    <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10">
+      <main className="relative flex flex-col gap-8 items-center text-center my-20">
         <Image
           className="dark:invert"
           src="/ecocloset_logo.png"
