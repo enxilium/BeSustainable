@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 
 from modules import model
-from modules import account
+from backend.modules import db
 
 app = Flask(__name__)
 
@@ -30,7 +30,7 @@ def signup():
     user["email"] = data.get("email")
     user["password"] = data.get("password")
 
-    acc = account.createUser(user)
+    acc = db.createUser(user)
 
     match acc:
 
@@ -53,7 +53,7 @@ def login():
     email = data.get("email")
     password = data.get("password")
 
-    acc = account.login(email, password)
+    acc = db.login(email, password)
 
     data = {
         "name": acc["name"],
@@ -78,7 +78,7 @@ def delete():
 
     email = data.get("email")
 
-    acc = account.deleteUser(email)
+    acc = db.deleteUser(email)
 
     match acc:
         case 0:
@@ -95,7 +95,7 @@ def getUser():
     
     email = data.get("email")
 
-    acc = account.getUser(email)
+    acc = db.getUser(email)
 
     data = {
         "name": acc["name"],
@@ -119,7 +119,7 @@ def updateUser():
 
     val = data.get("val")
 
-    acc = account.updateUserInfo(email, cat, val)
+    acc = db.updateUserInfo(email, cat, val)
 
     match acc:
         case 0:
@@ -138,7 +138,7 @@ def addItem():
 
     val = data.get("data")
 
-    acc = account.updateItem(email, val)
+    acc = db.updateItem(email, val)
 
     match acc:
         case 0:
@@ -162,7 +162,7 @@ def calcPrice():
     except Exception as e:
         return jsonify(status="Fail", message=e)
 
-    return jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+    return jsonify(status="Success", message="Calculation Successful", price=float(price*0.6)), 200
 
 
 if __name__ == "__main__":

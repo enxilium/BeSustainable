@@ -15,6 +15,8 @@ db = client["BeSustainable"]
 
 account = db["Account"]
 
+dashboard = db["Dashboard"]
+
 def createUser(accountInfo: dict) -> int:
     """Sign up function (Does the hashing)
 
@@ -149,6 +151,22 @@ def updateItem(email: str, val: dict) -> int:
 
     return 0
 
+def addItem(date: datetime, name: str, money: float) -> int:
+
+    item = {
+        'date': date,
+        'name': name,
+        'money': money
+    }
+
+    dashboard.insert_one(item)
+
+    return 0
+
+def getItems() -> list:
+
+    return [x for x in dashboard.find()]
+
 if __name__ == "__main__":
 
     date = datetime.datetime.now()
@@ -174,7 +192,7 @@ if __name__ == "__main__":
             "money": 5,
             "picture": None
         }
-    
+        
 
     print(updateUserInfo("john@example.com", "name", "jane"))
 
@@ -183,3 +201,9 @@ if __name__ == "__main__":
     print(getUser("john@example.com"))
 
     print(deleteUser("john@example.com"))
+    
+    addItem(datetime.datetime.now(), "shirt", 5.59)
+
+    print(getItems())
+
+
