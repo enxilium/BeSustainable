@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "export FLASK_APP=backend/main.py && flask run",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
