@@ -63,7 +63,7 @@ function RecommendationContent(){
             <h2 className="text-xl mb-4">Your uploaded photo:</h2>
             <div className="w-64 h-64 bg-gray-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
               {imagePath ? (
-                <Image src={imagePath} alt="Uploaded clothing" width={256} height={256} objectFit="contain" />
+                <Image src={imagePath} alt="Your clothing" width={256} height={256} objectFit="contain" />
               ) : (
                 <span className="block text-sm text-gray-500">No image uploaded</span>
               )}
