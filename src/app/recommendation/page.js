@@ -12,6 +12,7 @@ function RecommendationContent(){
   const [value, setValue] = useState('N/A');
   const [imagePath, setImagePath] = useState('');
   const [analysis, setAnalysis] = useState('');
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ function RecommendationContent(){
     if (result) {
       console.log('Raw result:', result);
 
-      const [description, list, recommendationResult] = result.split('%%%').map(part => part.trim());
+      const [description, list, recommendationResult, recommendationExplanation] = result.split('%%%').map(part => part.trim());
       const recommendationUpper = recommendationResult.toUpperCase();
       setRecommendation(recommendationUpper);
       
@@ -36,7 +37,7 @@ function RecommendationContent(){
       });
 
       // Set the analysis using the parsed details
-      setAnalysis(`Type: ${details.type}, Brand: ${details.brand}, Material: ${details.material}, Style: ${details.style}, Color: ${details.color}, State: ${details.state}`);
+      setAnalysis(`${recommendationExplanation}`);
       
       // Set value only if recommendation is THRIFT and price is available
       if (recommendationUpper === 'THRIFT' && price) {

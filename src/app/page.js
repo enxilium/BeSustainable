@@ -33,8 +33,8 @@ const handleUpload = async (file) => {
                 'color': describe the clothing using 1 color. don't use 'light color' or 'dark color' here.
                 'state': the condition of the clothing, choose between used and new
                 Aftewards, output %%% and then place the descriptions in a list with the following order ['type', 'brand', 'material', 'style', 'color', 'state']. Do not output this string as is. Replace the values within it.
-                Output %%% once again, and then output a choice that you think fits best for this article of clothing, if you had to choose. Do not explain why, simply output your choice.
-                Choose between THRIFT, DONATE, DISPOSE`,
+                Output %%% once again, and then output a choice that you think fits best for this article of clothing, if you had to choose.
+                Choose between THRIFT, DONATE, DISPOSE. Then, output %%% again, and explain concisely why you made that choice without explicitly referring to yourself.`,
               },
               {
                 type: 'image_url',
@@ -75,12 +75,18 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [response, setResponse] = useState(null);
   const router = useRouter();
+  const [labelText, setLabelText] = useState("⤒ Upload");
+
+  const changeLabelText = () => {
+    setLabelText('Processing...'); // Change text when the function is called
+  };
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
     if (file) {
       setIsUploading(true);
+      changeLabelText();
       try {
         // Upload the file
         const formData = new FormData();
@@ -97,7 +103,7 @@ export default function Home() {
         console.log('OpenAI Response:', result);
         
         // Parse the OpenAI response
-      const [description, list, recommendationResult] = result.split('%%%').map(part => part.trim());
+      const [description, list, recommendationResult, recommendationExplanation] = result.split('%%%').map(part => part.trim());
       const recommendation = recommendationResult.toUpperCase();
       
       console.log('Recommendation:', recommendation);
@@ -167,8 +173,8 @@ export default function Home() {
         <h1 className="text-5xl sm:text-5xl">ECOCLOSET</h1>
         <p>You give us a picture of your worn clothes, and we'll give it a second life.</p>
         <label className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer">
-          <input type="file" onChange={handleFileChange} className="hidden" />
-          ⤒ Upload
+          <input type="file" accept="image/png, image/jpeg" onChange={handleFileChange} className="hidden" />
+          {labelText}
         </label>
         {response && (
           <div>

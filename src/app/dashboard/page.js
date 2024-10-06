@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 
 function DashboardContent(){
   const [selectedItem, setSelectedItem] = useState(null);
+  const [summaryTitle, setSummaryTitle] = useState('Recommended Locations');
   let [savedMoney, setSavedMoney] = useState(0);
   let [items, setItem] = useState([]);
 
@@ -78,6 +79,10 @@ function DashboardContent(){
 
   }
 
+  else if (recommendation == "DISPOSE"){
+    setSummaryTitle("Remember to dispose of your items responsibly! Thank you for being a sustainable citizen. :)");
+  }
+
   
 
   return (
@@ -104,7 +109,7 @@ function DashboardContent(){
           </div>
           
           <div className="w-full">
-            <h3 className="text-xl font-bold mb-4">Your Items</h3>
+            <h3 className="text-xl font-bold mb-4">{summaryTitle}</h3>
             <ul className="space-y-4">
               {items.map((item) => (
                 <li key={item.id} className="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
