@@ -6,8 +6,7 @@ import { ArrowLeft, Info } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-
-export default function AboutPage() {
+function DashboardContent(){
   const [selectedItem, setSelectedItem] = useState(null);
   let [savedMoney, setSavedMoney] = useState(0);
   let [items, setItem] = useState([]);
@@ -75,14 +74,13 @@ export default function AboutPage() {
       fetchData();
 
       setSavedMoney(recommendation);
-    }, [recommendation, price]);
+    }, [searchParams]);
 
   }
 
   
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden mx-4">
         <main className="relative flex flex-col gap-8 items-center text-center w-full max-w-md">
           <Image
@@ -147,6 +145,16 @@ export default function AboutPage() {
           </a>
         </main>
       </div>
-    </Suspense>
+  );
+}
+
+
+export default function Dashboard() {
+  return (
+    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
+      <Suspense fallback={<div>Loading...</div>}>
+        <DashboardContent />
+      </Suspense>
+    </div>
   );
 }
