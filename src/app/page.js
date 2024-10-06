@@ -142,7 +142,7 @@ export default function Home() {
       }
       
       console.log('Final price before redirect:', price);
-      
+    
       // Navigate to the recommendation page
       router.push(`/recommendation?result=${encodeURIComponent(result)}&image=${uploadData.filePath}&price=${price}`);
     } catch (error) {
