@@ -153,8 +153,8 @@ export default function Home() {
 };
 
   return (
-    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden mx-4">
-      <main className="relative flex flex-col gap-8 items-center text-center">
+    <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10">
+      <main className="relative flex flex-col gap-8 items-center text-center my-20">
         <Image
           className="dark:invert"
           src="/ecocloset_logo.png"

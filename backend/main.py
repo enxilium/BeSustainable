@@ -1,8 +1,10 @@
+import datetime
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 from modules import model
-from modules import account
+from modules import db
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/*":{"origins": "*"}})
@@ -33,7 +35,7 @@ def signup():
     user["email"] = data.get("email")
     user["password"] = data.get("password")
 
-    acc = account.createUser(user)
+    acc = db.createUser(user)
 
     match acc:
 
@@ -56,7 +58,7 @@ def login():
     email = data.get("email")
     password = data.get("password")
 
-    acc = account.login(email, password)
+    acc = db.login(email, password)
 
     data = {
         "name": acc["name"],
@@ -81,7 +83,7 @@ def delete():
 
     email = data.get("email")
 
-    acc = account.deleteUser(email)
+    acc = db.deleteUser(email)
 
     match acc:
         case 0:
@@ -98,7 +100,7 @@ def getUser():
     
     email = data.get("email")
 
-    acc = account.getUser(email)
+    acc = db.getUser(email)
 
     data = {
         "name": acc["name"],
@@ -122,7 +124,7 @@ def updateUser():
 
     val = data.get("val")
 
-    acc = account.updateUserInfo(email, cat, val)
+    acc = db.updateUserInfo(email, cat, val)
 
     match acc:
         case 0:
@@ -141,7 +143,7 @@ def addItem():
 
     val = data.get("data")
 
-    acc = account.updateItem(email, val)
+    acc = db.updateItem(email, val)
 
     match acc:
         case 0:
@@ -169,12 +171,37 @@ def calcPrice():
     except Exception as e:
         return jsonify(status="Fail", message=e)
 
-    print(f'price: {price}')
 
     res = jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
 
     return res
 
+@app.route('/addDItem', methods=['POST'])
+def addDItem():
+
+    if not request.is_json:
+        return jsonify(status="Fail", message="No Data Received"), 400
+    
+    data = request.get_json()
+
+    date = datetime.datetime.now()
+    name = data.get("name")
+    money = data.get("money")
+
+    db.addItem(date, name, money)
+
+    return jsonify(status="Success", message="Item added"), 201
+
+@app.route('/getDItem', methods=['GET'])
+def getDItem():
+
+    data = db.getItems()
+
+    
+
+    return jsonify(status="Success", message="Items retrieved", data=data ), 200
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

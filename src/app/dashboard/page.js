@@ -28,7 +28,7 @@ export default function AboutPage() {
           height={38}
           priority
         />
-        <h1 className="text-5xl sm:text-5xl">About ECOCLOSET</h1>
+        <h1 className="text-5xl sm:text-5xl">Summary</h1>
         
         <div className="bg-green-100 rounded-lg p-4 w-full">
           <h2 className="text-2xl font-bold text-green-800">Total Savings</h2>
