@@ -19,6 +19,8 @@ CAT = ['type', 'brand', 'material', 'style', 'color', 'state']
 
 def predict(texts: list) -> float:
 
+    print(f'val: {texts}')
+
     preData = [f"{CAT[i]}_{texts[i].lower()}" for i in range(len(texts))]
 
     data = {}
@@ -27,6 +29,7 @@ def predict(texts: list) -> float:
         data[col] = [False]
 
     for i in preData:
+        
         if i in COLS:
             data[i] = [True]
 

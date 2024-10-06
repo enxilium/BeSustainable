@@ -1,15 +1,22 @@
 import datetime
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 from modules import model
 from modules import db
+from modules import maps
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/*":{"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def signup():
+
+    if request.method == 'OPTIONS':
+        return '', 200
 
     user = {
             "name": "",
@@ -43,8 +50,13 @@ def signup():
             return jsonify(status="Fail", message='Email is associated with existing account, please login or use a different email.'), 409
             
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def login():
+
+    if request.method == 'OPTIONS':
+        return '', 200
 
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
@@ -71,8 +83,14 @@ def login():
 
     return jsonify(status="Success", message="Logged in", data=data), 200
         
-@app.route('/delete', methods=['POST'])
+@app.route('/delete', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def delete():
+
+    if request.method == 'OPTIONS':
+        return '', 200
+
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
@@ -88,8 +106,14 @@ def delete():
         case -1:
             return jsonify(status="Fail", message="Account not found."), 404
     
-@app.route('/getUser', methods=['POST'])
+@app.route('/getUser', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def getUser():
+
+    if request.method == 'OPTIONS':
+        return '', 200
+
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
@@ -108,8 +132,14 @@ def getUser():
 
     return jsonify(status="Success", message="User info retrieved", data=data), 200
 
-@app.route('/updateUser', methods=['POST'])
+@app.route('/updateUser', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def updateUser():
+
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
@@ -129,8 +159,13 @@ def updateUser():
         case -1:
             return jsonify(status="Fail", message="Account not found."), 404
 
-@app.route('/addItem', methods=['POST'])
+@app.route('/addItem', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def addItem():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
@@ -149,13 +184,17 @@ def addItem():
             return jsonify(status="Fail", message="Account not found."), 404
 
 
-@app.route('/calcPrice', methods=['POST'])
+@app.route('/calcPrice', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def calcPrice():
+    if request.method == 'OPTIONS':
+        return '', 200
+
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
     data = request.get_json()
-
+    
     val = data.get("data")
 
     try:
@@ -164,10 +203,18 @@ def calcPrice():
     except Exception as e:
         return jsonify(status="Fail", message=e)
 
-    return jsonify(status="Success", message="Calculation Successful", price=float(price*0.6)), 200
 
-@app.route('/addDItem', methods=['POST'])
+    res = jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+
+    return res
+
+@app.route('/addDItem', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def addDItem():
+
+    if request.method == 'OPTIONS':
+        return '', 200
 
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
@@ -182,14 +229,25 @@ def addDItem():
 
     return jsonify(status="Success", message="Item added"), 201
 
-@app.route('/getDItem', methods=['GET'])
+@app.route('/getDItem', methods=['GET', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+
 def getDItem():
+
+    if request.method == 'OPTIONS':
+        return '', 200
 
     data = db.getItems()
 
     return jsonify(status="Success", message="Items retrieved", data=data ), 200
 
-    
+@app.route('/donation', methods=['GET', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
+def getDonations():
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    places = maps.getDonations()
 
 if __name__ == "__main__":
     app.run(debug=True)
