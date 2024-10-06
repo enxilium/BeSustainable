@@ -103,10 +103,7 @@ const About = () => {
       <Footer>
         <p>© 2024 Ecocloset. All rights reserved.</p>
         <p>
-          Designed with sustainability in mind. Contact us at{' '}
-          <a href="mailto:contact@ecocloset.com" style={{ color: '#2d6a4f' }}>
-            contact@ecocloset.com
-          </a>
+          Designed with sustainability in mind. Made with love 💖 for HTV 9.
         </p>
       </Footer>
     </Container>

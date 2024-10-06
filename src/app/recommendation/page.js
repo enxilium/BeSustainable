@@ -58,7 +58,7 @@ function RecommendationContent(){
 
 
   return (
-      <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
+      <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10">
         <div className="bg-white rounded-[2rem] shadow-lg p-8 max-w-md w-full">
           <main className="flex flex-col items-center text-center">
             <h2 className="text-xl mb-4">Your uploaded photo:</h2>
@@ -92,7 +92,7 @@ function RecommendationContent(){
 
 export default function RecommendationPage() {
   return (
-    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
+    <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10">
       <Suspense fallback={<div>Loading...</div>}>
         <RecommendationContent />
       </Suspense>

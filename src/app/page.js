@@ -34,7 +34,7 @@ const handleUpload = async (file) => {
                 'state': the condition of the clothing, choose between used and new
                 Aftewards, output %%% and then place the descriptions in a list with the following order ['type', 'brand', 'material', 'style', 'color', 'state']. Do not output this string as is. Replace the values within it.
                 Output %%% once again, and then output a choice that you think fits best for this article of clothing, if you had to choose.
-                Choose between THRIFT, DONATE, DISPOSE. Then, output %%% again, and explain concisely why you made that choice without explicitly referring to yourself.`,
+                Choose between THRIFT, DONATE, DISPOSE. Then, output %%% again, and explain concisely why you made that choice without explicitly referring to yourself. Follow this format EXACTLY as told, do not change the order.`,
               },
               {
                 type: 'image_url',

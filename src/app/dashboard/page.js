@@ -86,7 +86,7 @@ function DashboardContent(){
   
 
   return (
-      <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden mx-4">
+      <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10">
         <main className="relative flex flex-col gap-8 items-center text-center w-full max-w-md">
           <Image
             className="dark:invert"
@@ -156,7 +156,7 @@ function DashboardContent(){
 
 export default function Dashboard() {
   return (
-    <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
+    <div className="inset-0 flex justify-center items-center overflow-hidden mx-4 z-10 mb-10">
       <Suspense fallback={<div>Loading...</div>}>
         <DashboardContent />
       </Suspense>
