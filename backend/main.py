@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 from modules import model
 from modules import account
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/*":{"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def signup():
 
     user = {
@@ -147,13 +150,17 @@ def addItem():
             return jsonify(status="Fail", message="Account not found."), 404
 
 
-@app.route('/calcPrice', methods=['POST'])
+@app.route('/calcPrice', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def calcPrice():
+    if request.method == 'OPTIONS':
+        return '', 200
+
     if not request.is_json:
         return jsonify(status="Fail", message="No Data Received"), 400
     
     data = request.get_json()
-
+    
     val = data.get("data")
 
     try:
@@ -162,7 +169,11 @@ def calcPrice():
     except Exception as e:
         return jsonify(status="Fail", message=e)
 
-    return jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+    print(f'price: {price}')
+
+    res = jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+
+    return res
 
 
 if __name__ == "__main__":
