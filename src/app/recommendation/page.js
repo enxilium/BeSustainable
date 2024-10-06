@@ -53,6 +53,7 @@ export default function RecommendationPage() {
 
   console.log('Final set value:', value); // Log the final set value
 
+
   return (
     <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden p-4">
       <div className="bg-white rounded-[2rem] shadow-lg p-8 max-w-md w-full">
@@ -75,9 +76,9 @@ export default function RecommendationPage() {
           </p>
 
           <h3 className="text-lg font-semibold mb-1">Analysis:</h3>
-          <p className="text-sm mb-6">{analysis}</p>
+          <p className="text-sm mb-6">{analysis}</p>      
 
-          <Link href="/dashboard" className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out">
+          <Link href={{pathname: "/dashboard", query: { "recommendation":  recommendation, "price": value}}} className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out">
             Go to Dashboard
           </Link>
         </main>

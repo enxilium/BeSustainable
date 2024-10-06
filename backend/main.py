@@ -204,7 +204,7 @@ def calcPrice():
         return jsonify(status="Fail", message=e)
 
 
-    res = jsonify(status="Success", message="Calculation Successful", price=float(price)), 200
+    res = jsonify(status="Success", message="Calculation Successful", price=float(price*0.6)), 200
 
     return res
 
@@ -244,8 +244,6 @@ def getDItem():
 @app.route('/donation', methods=['GET', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 def getDonations():
-    if request.method == 'OPTIONS':
-        return '', 200
 
     places = maps.getDonations()
 

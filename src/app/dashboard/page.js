@@ -1,21 +1,84 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ArrowLeft, Info } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 
 export default function AboutPage() {
   const [selectedItem, setSelectedItem] = useState(null);
-  
+  let [savedMoney, setSavedMoney] = useState(0);
+  let [items, setItem] = useState([]);
 
-  // Mock data - replace with actual data in your app
-  const savedMoney = 1250.75;
-  const items = [
-    { id: 1, name: 'Old Textbook', description: 'Computer Science 101 textbook from last semester.' },
-    { id: 2, name: 'Unused Headphones', description: 'Brand new headphones, still in the box.' },
-    { id: 3, name: 'Vintage Jacket', description: 'Leather jacket from the 90s, great condition.' },
-  ];
+  const searchParams = useSearchParams();
+  const recommendation = searchParams.get('recommendation'); 
+  const price = searchParams.get('price'); 
+
+    
+  if (recommendation == "THRIFT"){
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          console.log('Calling /thrift endpoint');
+          const res = await fetch('http://127.0.0.1:5000/thrift', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+          });
+          const data = await res.json();
+
+          setItem(data["data"]);
+        }
+        
+        catch (error) {
+            console.error('Error handling file:', error);
+        }
+      }
+
+      fetchData();
+
+      setSavedMoney(Number(price).toFixed(2));
+    }, []);
+
+  }
+
+  else if (recommendation == "DONATE"){
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          console.log('Calling /donation endpoint');
+          const res = await fetch('http://127.0.0.1:5000/donation', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+          });
+          const data = await res.json();
+
+          setItem(data["data"]);
+        }
+        
+        catch (error) {
+            console.error('Error handling file:', error);
+        }
+      }
+
+      fetchData();
+
+      setSavedMoney(recommendation);
+    }, []);
+
+  }
+
+  
 
   return (
     <div className="absolute inset-0 flex justify-center items-center h-svh overflow-hidden mx-4">
@@ -31,8 +94,13 @@ export default function AboutPage() {
         <h1 className="text-5xl sm:text-5xl">Summary</h1>
         
         <div className="bg-green-100 rounded-lg p-4 w-full">
-          <h2 className="text-2xl font-bold text-green-800">Total Savings</h2>
-          <p className="text-4xl font-bold text-green-600">${savedMoney.toFixed(2)}</p>
+          <h2 className="text-2xl font-bold text-green-800">
+            {recommendation === "THRIFT" ? "Total Savings" : recommendation}
+          </h2>
+          
+          {recommendation === "THRIFT" && (
+            <p className="text-4xl font-bold text-green-600">${savedMoney}</p>
+          )}
         </div>
         
         <div className="w-full">
@@ -56,7 +124,7 @@ export default function AboutPage() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg p-6 max-w-sm w-full">
               <h4 className="text-xl font-bold mb-2">{selectedItem.name}</h4>
-              <p className="mb-4">{selectedItem.description}</p>
+              <p className="mb-4">{selectedItem.address}</p>
               <button
                 onClick={() => setSelectedItem(null)}
                 className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -66,13 +134,14 @@ export default function AboutPage() {
             </div>
           </div>
         )}
-        
-        <button
-          className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 flex items-center"
-        >
-          <ArrowLeft size={20} className="mr-2" />
-          Back to Home
-        </button>
+        <a href='/'>
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 flex items-center"
+          >
+            <ArrowLeft size={20} className="mr-2" />
+            Back to Home
+          </button>
+        </a>
       </main>
     </div>
   );
